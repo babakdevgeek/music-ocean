@@ -1,7 +1,8 @@
 import { prismaClient } from "@/prisma/prismaClient";
 import { AuthOptions, NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import { userSchema } from "./zodSchemas/userSchema";
+import bcrypt from "bcrypt";
 export const Authoptions = {
   providers: [
     CredentialsProvider({
@@ -24,20 +25,43 @@ export const Authoptions = {
         },
       },
       async authorize(credentials, req) {
-        const email = credentials?.email;
-        const password = credentials?.password;
-        if (email === "babakdevgeek") {
+        const inputValidation = userSchema.safeParse(credentials);
+        if (!inputValidation.success) {
+          return null;
         }
+        const { email, password } = inputValidation.data;
+
         const resultOfEmail = await prismaClient.users.findUnique({
           where: {
             email,
           },
         });
+
         if (!resultOfEmail) {
-          console.log("passed");
-          return { id: "213213", email, role: "anAssigned" };
-        } else {
-          return null;
+          const hashedPassword = await bcrypt.hash(password, 10);
+          const { id, email: savedEmail } = await prismaClient.users.create({
+            data: {
+              email,
+              password: hashedPassword,
+            },
+          });
+          return { id, email: savedEmail };
+        }
+
+        if (resultOfEmail) {
+          const decrypt = await bcrypt.compare(
+            password,
+            resultOfEmail.password
+          );
+
+          if (decrypt) {
+            return {
+              id: resultOfEmail.id,
+              email: resultOfEmail.email,
+            };
+          } else {
+            return null;
+          }
         }
       },
     }),
