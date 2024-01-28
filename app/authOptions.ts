@@ -1,8 +1,7 @@
 import { prismaClient } from "@/prisma/prismaClient";
-import { AuthOptions, NextAuthOptions } from "next-auth";
+import bcrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { userSchema } from "./zodSchemas/userSchema";
-import bcrypt from "bcrypt";
 export const Authoptions = {
   providers: [
     CredentialsProvider({
@@ -59,10 +58,9 @@ export const Authoptions = {
               id: resultOfEmail.id,
               email: resultOfEmail.email,
             };
-          } else {
-            return null;
           }
         }
+        return null;
       },
     }),
   ],
