@@ -11,9 +11,15 @@ const Navbar = () => {
   const pre = useRef<HTMLSpanElement>(null);
   const after = useRef<HTMLSpanElement>(null);
   useGSAP(() => {
-    gsap.to(diamond.current, { y: 0 });
-    gsap.to(pre.current, { x: 0 });
-    gsap.to(after.current, { x: 0 });
+    const tl = gsap.timeline();
+    tl.to(diamond.current, { delay: 0.5, opacity: 1, scale: 1 });
+    tl.to(pre.current, { x: 0, delay: -0.5 });
+    // tl.to(after.current, { rotate: 40 });
+    tl.to(after.current, {
+      x: 0,
+      delay: -0.5,
+    });
+    // tl.to(after.current, { x: 0 });
   });
   return (
     <nav className="  p-4 container">
@@ -26,7 +32,7 @@ const Navbar = () => {
             <IconDiamond
               ref={diamond}
               size="40"
-              className="logo-icon group-hover:fill-neutral ransition-colors -translate-y-96"
+              className="logo-icon group-hover:fill-error ransition-colors opacity-0 scale-0"
             />
             <span className="translate-x-4" ref={after}>
               اوشن
@@ -41,6 +47,11 @@ const Navbar = () => {
           <li>
             <Link href="/api/auth/signin" className="font-bold">
               ثبت نام
+            </Link>
+          </li>
+          <li>
+            <Link href="/api/auth/signout" className="font-bold">
+              خروج
             </Link>
           </li>
 
