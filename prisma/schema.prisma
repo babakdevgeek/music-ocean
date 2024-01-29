@@ -10,8 +10,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model users{
-  id String @id @default(uuid())
-  email String @unique
-  password String 
+model Users {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+}
+
+model Artists {
+  id                  String   @id @default(uuid())
+  english_artist_name String
+  persian_artist_name String
+  artist_genre        Genres[]
+  artist_musics       Musics[]
+}
+
+model Genres {
+  id                 String   @id @default(uuid())
+  english_genre_name String
+  persian_genre_name String
+  genre_artists Artists[]
+  genre_musics       Musics[]
+}
+
+model Musics {
+  id                 String  @id @default(uuid())
+  english_music_name String
+  music_genre        Genres  @relation(fields: [music_genre_id], references: [id])
+  music_genre_id     String
+  persian_music_name String
+  artist_id          Artists @relation(fields: [music_artist_id], references: [id])
+  music_artist_id    String
 }

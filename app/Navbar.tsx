@@ -23,8 +23,8 @@ const Navbar = () => {
   });
   return (
     <nav className="  p-4 container">
-      <div className=" navbar ">
-        <h1 className="text-primary text-2xl flex-1    ">
+      <div className=" navbar bg-primary/10 rounded-md">
+        <h1 className="text-primary text-2xl flex-1 pr-6">
           <Link href="/" className="flex group items-center">
             <span ref={pre} className="-translate-x-4">
               موزیک
@@ -43,7 +43,7 @@ const Navbar = () => {
           className="md:hidden logo-icon cursor-pointer  flex-none"
           size="25"
         />
-        <ul className="menu flex-none menu-horizontal md:flex gap-2">
+        <ul className="menu hidden flex-none menu-horizontal md:flex gap-2">
           <li>
             <Link href="/api/auth/signin" className="font-bold">
               ثبت نام

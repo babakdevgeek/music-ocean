@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import React from "react";
 import { Authoptions } from "../authOptions";
 import { redirect } from "next/navigation";
+import MusicForm from "./MusicForm";
 
 const Adminpage = async () => {
   const session = await getServerSession(Authoptions);
@@ -9,7 +10,7 @@ const Adminpage = async () => {
     redirect("/");
   }
 
-  return <div>{session ? session.user.role : "no access"}</div>;
+  return <MusicForm />;
 };
 
 export default Adminpage;
