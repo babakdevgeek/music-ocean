@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth";
-import React from "react";
-import { Authoptions } from "../authOptions";
 import { redirect } from "next/navigation";
-import MusicForm from "./MusicForm";
+import { Authoptions } from "../authOptions";
+import ArtistForm from "./ArtistForm";
+import BottomNav from "./BottomNav";
 
 const Adminpage = async () => {
   const session = await getServerSession(Authoptions);
@@ -10,7 +10,14 @@ const Adminpage = async () => {
     redirect("/");
   }
 
-  return <MusicForm />;
+  return (
+    <>
+      <div className="mb-32">
+        <ArtistForm />
+      </div>
+      <BottomNav />
+    </>
+  );
 };
 
 export default Adminpage;

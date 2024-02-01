@@ -6,13 +6,15 @@ import Link from "next/link";
 import { useRef } from "react";
 import { VscListSelection } from "react-icons/vsc";
 import ToggleThemeButton from "./ToggleThemeButton";
+import { useSession } from "next-auth/react";
 const Navbar = () => {
+  const { data } = useSession();
   const diamond = useRef<SVGSVGElement>(null);
   const pre = useRef<HTMLSpanElement>(null);
   const after = useRef<HTMLSpanElement>(null);
   useGSAP(() => {
     const tl = gsap.timeline();
-    tl.to(diamond.current, { delay: 0.5, opacity: 1, scale: 1 });
+    tl.to(diamond.current, { y: 0, ease: "elastic.out" });
     tl.to(pre.current, { x: 0, delay: -0.5 });
     // tl.to(after.current, { rotate: 40 });
     tl.to(after.current, {
@@ -32,28 +34,54 @@ const Navbar = () => {
             <IconDiamond
               ref={diamond}
               size="40"
-              className="logo-icon group-hover:fill-error ransition-colors opacity-0 scale-0"
+              className="logo-icon group-hover:fill-error ransition-colors -translate-y-20"
             />
             <span className="translate-x-4" ref={after}>
               اوشن
             </span>
           </Link>
         </h1>
-        <VscListSelection
-          className="md:hidden logo-icon cursor-pointer  flex-none"
-          size="25"
-        />
+
+        <details className="dropdown dropdown-end md:hidden">
+          <summary className="m-1 btn">
+            <VscListSelection
+              className="md:hidden logo-icon cursor-pointer  flex-none"
+              size="40"
+            />
+          </summary>
+          <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+            {!data ? (
+              <li>
+                <Link href="/api/auth/signin" className="font-bold">
+                  ثبت نام
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link href="/api/auth/signout" className="font-bold">
+                  خروج
+                </Link>
+              </li>
+            )}
+            <li>
+              <ToggleThemeButton />
+            </li>
+          </ul>
+        </details>
         <ul className="menu hidden flex-none menu-horizontal md:flex gap-2">
-          <li>
-            <Link href="/api/auth/signin" className="font-bold">
-              ثبت نام
-            </Link>
-          </li>
-          <li>
-            <Link href="/api/auth/signout" className="font-bold">
-              خروج
-            </Link>
-          </li>
+          {!data ? (
+            <li>
+              <Link href="/api/auth/signin" className="font-bold">
+                ثبت نام
+              </Link>
+            </li>
+          ) : (
+            <li>
+              <Link href="/api/auth/signout" className="font-bold">
+                خروج
+              </Link>
+            </li>
+          )}
 
           <li>
             <ToggleThemeButton />

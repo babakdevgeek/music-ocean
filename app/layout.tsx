@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "./Navbar";
 import Head from "next/head";
 import ThemeProvider from "./ThemeProvider";
+import { EdgeStoreProvider } from "./edgestore";
+import NextAuthProvider from "./NextAuthProvider";
 
 const inter = localFont({ src: "../public/fonts/Gandom-FD.woff2" });
 
@@ -20,10 +22,14 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dracula" dir="rtl" className=" max-w-full ">
       <body className={inter.className}>
-        <ThemeProvider>
-          <Navbar />
-          <main className="container my-5 px-4">{children}</main>
-        </ThemeProvider>
+        <NextAuthProvider>
+          <ThemeProvider>
+            <EdgeStoreProvider>
+              <Navbar />
+              <main className="container my-5 px-4">{children}</main>
+            </EdgeStoreProvider>
+          </ThemeProvider>
+        </NextAuthProvider>
       </body>
     </html>
   );

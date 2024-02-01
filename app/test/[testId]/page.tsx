@@ -1,5 +1,7 @@
-const page = ({ params }: { params: { testId: string } }) => {
-  return <div>{params.testId}</div>;
+import Form from "./Form";
+
+const Page = async ({ params }: { params: { testId: string } }) => {
+  return <Form />;
 };
 
-export default page;
+export default Page;

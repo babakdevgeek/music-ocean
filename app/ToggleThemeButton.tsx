@@ -5,16 +5,16 @@ const ToggleThemeButton = () => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <label className="swap swap-rotate">
+    <label className="swap swap-rotate place-content-start">
       {/* this hidden checkbox controls the state */}
       <input
         type="checkbox"
         className="theme-controller"
         onChange={(e) => {
-          const newTeam = e.target.value === "dracula" ? "lemonade" : "dracula";
+          const newTeam = e.target.value === "dracula" ? "garden" : "dracula";
           setTheme(newTeam);
         }}
-        value={theme === "dracula" ? "lemonade" : "dracula"}
+        value={theme === "dracula" ? "garden" : "dracula"}
       />
       {/* sun icon */}
       <svg
